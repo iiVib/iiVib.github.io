@@ -18,7 +18,7 @@
 
         <div class="container">
             <div class="header">
-                <h1>🎮 لعبة اختيار الشخصيات</h1>
+                <h1>⚡ لعبة اختيار الشخصيات ⚡</h1>
                 <p id="gameStatus">🎮 اللعبة جاهزة!</p>
             </div>
 
@@ -141,11 +141,12 @@
                 // تحديث الاختيارات للعرض فقط (بدون تعديل الاختيارات الشخصية)
                 if (room.player1 && room.player1.selected && currentRole === 2) {
                     selectedPlayer1 = new Set(room.player1.selected);
+                    updateDisplay();
                 }
                 if (room.player2 && room.player2.selected && currentRole === 1) {
                     selectedPlayer2 = new Set(room.player2.selected);
+                    updateDisplay();
                 }
-                updateDisplay();
             }
         }
 
@@ -199,7 +200,7 @@
                 div.className = 'character';
 
                 div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/667eea/FFFFFF?text=${encodeURIComponent(char.name)}'">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/1a1a2e/FFFFFF?text=${encodeURIComponent(char.name)}'">
                     <div class="character-name">${char.name}</div>
                 `;
 
@@ -211,7 +212,7 @@
                             selectedPlayer1.add(index);
                         }
                         saveSelections();
-                    } else {
+                    } else if (currentRole === 2) {
                         if (selectedPlayer2.has(index)) {
                             selectedPlayer2.delete(index);
                         } else {
@@ -231,43 +232,47 @@
         function updateDisplay() {
             const mainGrid = document.getElementById('mainGrid');
             mainGrid.querySelectorAll('.character').forEach((char, index) => {
-                const player1Selected = selectedPlayer1.has(index);
-                const player2Selected = selectedPlayer2.has(index);
+                const isSelected = (currentRole === 1 && selectedPlayer1.has(index)) || 
+                                  (currentRole === 2 && selectedPlayer2.has(index));
                 
-                if (player1Selected || player2Selected) {
+                if (isSelected) {
                     char.classList.add('selected');
                 } else {
                     char.classList.remove('selected');
                 }
             });
 
-            // عرض اختيارات اللاعب الأول فقط
+            // عرض اختيارات اللاعب الأول فقط (لا يرى المتلقي)
             const player1Display = document.getElementById('player1Display');
             player1Display.innerHTML = '';
-            selectedPlayer1.forEach(index => {
-                const char = characters[index];
-                const div = document.createElement('div');
-                div.className = 'character';
-                div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/FF6B6B/FFFFFF?text=${encodeURIComponent(char.name)}'">
-                    <div class="character-name">${char.name}</div>
-                `;
-                player1Display.appendChild(div);
-            });
+            if (currentRole === 1) {
+                selectedPlayer1.forEach(index => {
+                    const char = characters[index];
+                    const div = document.createElement('div');
+                    div.className = 'character';
+                    div.innerHTML = `
+                        <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/FF3D3D/FFFFFF?text=${encodeURIComponent(char.name)}'">
+                        <div class="character-name">${char.name}</div>
+                    `;
+                    player1Display.appendChild(div);
+                });
+            }
 
-            // عرض اختيارات اللاعب الثاني فقط
+            // عرض اختيارات اللاعب الثاني فقط (لا يرى المتلقي)
             const player2Display = document.getElementById('player2Display');
             player2Display.innerHTML = '';
-            selectedPlayer2.forEach(index => {
-                const char = characters[index];
-                const div = document.createElement('div');
-                div.className = 'character';
-                div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/4ECDC4/FFFFFF?text=${encodeURIComponent(char.name)}'">
-                    <div class="character-name">${char.name}</div>
-                `;
-                player2Display.appendChild(div);
-            });
+            if (currentRole === 2) {
+                selectedPlayer2.forEach(index => {
+                    const char = characters[index];
+                    const div = document.createElement('div');
+                    div.className = 'character';
+                    div.innerHTML = `
+                        <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/00D4FF/FFFFFF?text=${encodeURIComponent(char.name)}'">
+                        <div class="character-name">${char.name}</div>
+                    `;
+                    player2Display.appendChild(div);
+                });
+            }
         }
 
         function resetPlayer(playerNum) {
