@@ -25,6 +25,11 @@ body {
     display: block;
 }
 
+.game-screen {
+    width: 100%;
+    max-width: 1200px;
+}
+
 /* شاشة البداية */
 .start-container {
     background: rgba(255, 255, 255, 0.95);
@@ -95,7 +100,7 @@ body {
     font-size: 1.1em;
 }
 
-/* شاشة الانتظار */
+/* شاشات الانتظار والانضمام والدور */
 .waiting-container,
 .join-container,
 .role-container {
@@ -240,6 +245,23 @@ body {
 
 .cancel-btn:hover {
     background: #999;
+}
+
+.join-btn-form {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+    margin-bottom: 15px;
+}
+
+.join-btn-form:hover {
+    background: #764ba2;
 }
 
 /* شاشة اللعبة */
