@@ -446,6 +446,262 @@ body {
     color: #FFD700;
 }
 
+/* ===== MUSIC CONTROL STYLES ===== */
+
+/* Music Control Panel */
+.music-control-panel {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 200;
+    align-items: center;
+}
+
+/* Music Toggle Button */
+.music-toggle {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #FF3D3D 0%, #CC0000 100%);
+    color: white;
+    border: 2px solid #FF6B6B;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.3em;
+    font-family: 'Jujutsu Kaisen', 'Arial', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 0 15px rgba(255, 61, 61, 0.5);
+    min-width: 50px;
+    text-align: center;
+}
+
+.music-toggle:hover {
+    box-shadow: 0 0 25px rgba(255, 61, 61, 0.8);
+    transform: scale(1.1);
+}
+
+.music-toggle:active {
+    transform: scale(0.95);
+}
+
+/* OST Selector Button */
+.ost-selector-btn {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #00D4FF 0%, #0099CC 100%);
+    color: white;
+    border: 2px solid #00FFFF;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.3em;
+    font-family: 'Jujutsu Kaisen', 'Arial', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+    min-width: 50px;
+    text-align: center;
+}
+
+.ost-selector-btn:hover {
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.8);
+    transform: scale(1.1);
+}
+
+.ost-selector-btn:active {
+    transform: scale(0.95);
+}
+
+/* Volume Control */
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95) 0%, rgba(30, 30, 60, 0.95) 100%);
+    padding: 10px 15px;
+    border-radius: 50px;
+    border: 2px solid #FFD700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.volume-icon {
+    font-size: 1.2em;
+    min-width: 20px;
+}
+
+.volume-control input[type="range"] {
+    width: 120px;
+    cursor: pointer;
+    accent-color: #FFD700;
+}
+
+#volumeLabel {
+    color: #FFD700;
+    font-weight: bold;
+    min-width: 45px;
+    text-align: right;
+    font-size: 0.9em;
+    text-shadow: 0 0 5px #FFD700;
+}
+
+/* ===== OST MODAL STYLES ===== */
+
+/* OST Modal */
+.ost-modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.3s ease-in;
+    overflow-y: auto;
+}
+
+.ost-modal-content {
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.98) 0%, rgba(30, 30, 60, 0.98) 100%);
+    margin: 5% auto;
+    padding: 30px;
+    border: 3px solid #00D4FF;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.5), 0 0 50px rgba(255, 61, 61, 0.2);
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.ost-modal-content h2 {
+    color: #FF3D3D;
+    font-size: 2em;
+    margin-bottom: 25px;
+    text-align: center;
+    text-shadow: 0 0 15px #FF3D3D;
+}
+
+.ost-close {
+    color: #FF3D3D;
+    float: left;
+    font-size: 2.5em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    line-height: 1;
+}
+
+.ost-close:hover {
+    color: #FFB3B3;
+    text-shadow: 0 0 15px #FF3D3D;
+}
+
+/* OST List */
+.ost-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.ost-item {
+    width: 100%;
+}
+
+/* OST Main Button */
+.ost-main-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #FF3D3D 0%, #CC0000 100%);
+    color: white;
+    border: 2px solid #FF6B6B;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+    font-family: 'Jujutsu Kaisen', 'Arial', sans-serif;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.ost-main-btn:hover {
+    box-shadow: 0 0 20px rgba(255, 61, 61, 0.6);
+    transform: translateX(-5px);
+}
+
+/* OST Submenu */
+.ost-submenu {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.ost-submenu.active {
+    display: flex;
+}
+
+/* OST Sub Button */
+.ost-sub-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 153, 204, 0.2) 100%);
+    color: #00D4FF;
+    border: 2px solid #00D4FF;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    font-family: 'Jujutsu Kaisen', 'Arial', sans-serif;
+    transition: all 0.3s;
+    text-align: center;
+    margin-left: 15px;
+}
+
+.ost-sub-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.4) 0%, rgba(0, 153, 204, 0.4) 100%);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+    transform: translateX(5px);
+}
+
+/* OST Current */
+.ost-current {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #FFD700;
+    text-align: center;
+}
+
+.ost-current p {
+    color: #FFD700;
+    font-weight: bold;
+    text-shadow: 0 0 10px #FFD700;
+    margin: 0;
+}
+
 /* Modal Styles */
 .modal {
     display: none;
@@ -471,17 +727,6 @@ body {
     display: flex;
     gap: 30px;
     animation: slideDown 0.4s ease-out;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
 
 .modal-image {
@@ -543,6 +788,25 @@ body {
 .close:hover {
     color: #FFB3B3;
     text-shadow: 0 0 15px #FF3D3D;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FF3D3D;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00D4FF;
+    box-shadow: 0 0 10px rgba(255, 61, 61, 0.5);
 }
 
 /* Responsive Design */
@@ -671,6 +935,42 @@ body {
     .btn-text {
         font-size: 0.95em;
     }
+
+    /* Music Control Panel - Mobile */
+    .music-control-panel {
+        flex-wrap: wrap;
+        bottom: 10px;
+        left: 10px;
+        gap: 8px;
+    }
+
+    .music-toggle,
+    .ost-selector-btn {
+        padding: 10px 14px;
+        font-size: 1.1em;
+        min-width: 45px;
+    }
+
+    .volume-control {
+        width: calc(100% - 20px);
+        order: 3;
+    }
+
+    .volume-control input[type="range"] {
+        width: 80px;
+    }
+
+    /* OST Modal - Mobile */
+    .ost-modal-content {
+        width: 95%;
+        padding: 20px;
+        margin: 30% auto;
+    }
+
+    .ost-modal-content h2 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -792,23 +1092,57 @@ body {
         font-size: 1em;
         padding: 12px;
     }
-}
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-    width: 10px;
-}
+    /* Music Control Panel - Small Mobile */
+    .music-control-panel {
+        bottom: 8px;
+        left: 8px;
+        gap: 6px;
+    }
 
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.5);
-}
+    .music-toggle,
+    .ost-selector-btn {
+        padding: 8px 12px;
+        font-size: 1em;
+        min-width: 40px;
+        border-radius: 30px;
+    }
 
-::-webkit-scrollbar-thumb {
-    background: #FF3D3D;
-    border-radius: 5px;
-}
+    .volume-control {
+        width: calc(100% - 16px);
+        padding: 8px 12px;
+        gap: 8px;
+    }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #00D4FF;
-    box-shadow: 0 0 10px rgba(255, 61, 61, 0.5);
+    .volume-control input[type="range"] {
+        width: 60px;
+    }
+
+    #volumeLabel {
+        min-width: 40px;
+        font-size: 0.8em;
+    }
+
+    /* OST Modal - Small Mobile */
+    .ost-modal-content {
+        width: 98%;
+        padding: 15px;
+        margin: 40% auto;
+    }
+
+    .ost-modal-content h2 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .ost-main-btn {
+        padding: 12px;
+        font-size: 1em;
+    }
+
+    .ost-sub-btn {
+        padding: 10px;
+        font-size: 0.9em;
+        margin-left: 10px;
+    }
 }
