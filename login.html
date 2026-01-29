@@ -69,10 +69,175 @@
         </div>
     </div>
 
+    <!-- Background Music -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="musics/jjk-music/track1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Control Panel -->
+    <div class="music-control-panel">
+        <!-- Music Toggle Button -->
+        <button id="musicToggle" class="music-toggle" title="تشغيل/إيقاف الموسيقى">
+            🔊
+        </button>
+
+        <!-- OST Selector Button -->
+        <button class="ost-selector-btn" onclick="showOSTMenu()" title="اختر الموسيقى">
+            🎵
+        </button>
+
+        <!-- Volume Control -->
+        <div class="volume-control" id="volumeControl" style="display: none;">
+            <span class="volume-icon">🔉</span>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5">
+            <span id="volumeLabel">50%</span>
+        </div>
+    </div>
+
+    <!-- OST Menu Modal -->
+    <div id="ostModal" class="ost-modal">
+        <div class="ost-modal-content">
+            <span class="ost-close" onclick="closeOSTMenu()">&times;</span>
+            <h2>اختر الموسيقى 🎵</h2>
+            
+            <div class="ost-list">
+                <!-- Jujutsu Kaisen OST -->
+                <div class="ost-item">
+                    <button class="ost-main-btn" onclick="toggleOSTSubmenu('jjk')">
+                        Jujutsu Kaisen OST 🔥
+                    </button>
+                    <div id="jjk-submenu" class="ost-submenu" style="display: none;">
+                        <button class="ost-sub-btn" onclick="selectOST('musics/jjk-music', 'Jujutsu Kaisen (English)')">
+                            🇬🇧 النسخة الإنجليزية
+                        </button>
+                        <button class="ost-sub-btn" onclick="selectOST('musics/jjk-music-ar', 'Jujutsu Kaisen (Arabic)')">
+                            🇸🇦 النسخة العربية
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Youjo Senki OST -->
+                <div class="ost-item">
+                    <button class="ost-main-btn" onclick="selectOST('musics/senki-music', 'Youjo Senki OST')">
+                        Youjo Senki OST ⚔️
+                    </button>
+                </div>
+
+                <!-- Mahoraga vs Sukuna OST -->
+                <div class="ost-item">
+                    <button class="ost-main-btn" onclick="selectOST('musics/mahoragavssukuna-music', 'Mahoraga vs Sukuna')">
+                        Mahoraga vs Sukuna OST ⚡
+                    </button>
+                </div>
+            </div>
+
+            <div class="ost-current">
+                <p>الموسيقى الحالية: <span id="currentOST">Jujutsu Kaisen (English)</span></p>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentGameCode = null;
         let currentRole = null;
+        let isMusicPlaying = true;
+        let currentOSTPath = 'musics/jjk-music';
+        let currentOSTName = 'Jujutsu Kaisen (English)';
 
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeLabel = document.getElementById('volumeLabel');
+        const volumeControl = document.getElementById('volumeControl');
+        const ostModal = document.getElementById('ostModal');
+
+        // إعدادات الصوت
+        bgMusic.volume = 0.5;
+
+        // تشغيل/إيقاف الموسيقى
+        musicToggle.addEventListener('click', function() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicToggle.textContent = '🔇';
+                musicToggle.style.background = 'linear-gradient(135deg, #666666 0%, #444444 100%)';
+                isMusicPlaying = false;
+            } else {
+                bgMusic.play();
+                musicToggle.textContent = '🔊';
+                musicToggle.style.background = 'linear-gradient(135deg, #FF3D3D 0%, #CC0000 100%)';
+                isMusicPlaying = true;
+            }
+        });
+
+        // التحكم في مستوى الصوت
+        volumeSlider.addEventListener('input', function() {
+            bgMusic.volume = this.value;
+            volumeLabel.textContent = Math.round(this.value * 100) + '%';
+        });
+
+        // عرض/إخفاء التحكم في مستوى الصوت
+        document.querySelector('.ost-selector-btn').addEventListener('click', function() {
+            volumeControl.style.display = volumeControl.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        // عرض قائمة الموسيقى
+        function showOSTMenu() {
+            ostModal.style.display = 'block';
+            volumeControl.style.display = 'none';
+        }
+
+        // إغلاق قائمة الموسيقى
+        function closeOSTMenu() {
+            ostModal.style.display = 'none';
+        }
+
+        // تبديل القائمة الفرعية
+        function toggleOSTSubmenu(menu) {
+            const submenu = document.getElementById(menu + '-submenu');
+            submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // اختيار الموسيقى
+        function selectOST(path, name) {
+            currentOSTPath = path;
+            currentOSTName = name;
+            
+            // تحديث الموسيقى
+            const currentTime = bgMusic.currentTime;
+            bgMusic.src = path + '/track1.mp3';
+            bgMusic.currentTime = 0;
+            
+            if (isMusicPlaying) {
+                bgMusic.play();
+            }
+
+            document.getElementById('currentOST').textContent = name;
+            closeOSTMenu();
+            
+            // حفظ الاختيار
+            localStorage.setItem('selectedOST', JSON.stringify({path, name}));
+        }
+
+        // إغلاق المودال عند الضغط خارجه
+        window.onclick = function(event) {
+            if (event.target == ostModal) {
+                ostModal.style.display = 'none';
+            }
+        }
+
+        // تحميل الموسيقى المحفوظة
+        function loadSavedOST() {
+            const saved = localStorage.getItem('selectedOST');
+            if (saved) {
+                const {path, name} = JSON.parse(saved);
+                currentOSTPath = path;
+                currentOSTName = name;
+                bgMusic.src = path + '/track1.mp3';
+                document.getElementById('currentOST').textContent = name;
+            }
+        }
+
+        // دوال اللعبة الأصلية
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
@@ -148,6 +313,8 @@
         function goToGame() {
             sessionStorage.setItem('gameCode', currentGameCode);
             sessionStorage.setItem('playerRole', currentRole);
+            sessionStorage.setItem('ostPath', currentOSTPath);
+            sessionStorage.setItem('ostName', currentOSTName);
             window.location.href = 'game.html';
         }
 
@@ -174,6 +341,9 @@
             showScreen('startScreen');
             document.getElementById('joinCode').value = '';
         }
+
+        // تحميل الموسيقى المحفوظة عند فتح الصفحة
+        loadSavedOST();
     </script>
 </body>
 </html>
