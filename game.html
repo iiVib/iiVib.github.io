@@ -50,18 +50,56 @@
     <script>
         // متغيرات اللعبة
         const characters = [
-            { name: 'فيجيتا', image: 'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=200&h=250&fit=crop' },
-            { name: 'زورو', image: 'https://images.unsplash.com/photo-1535016120754-fd45c1d54fdf?w=200&h=250&fit=crop' },
-            { name: 'لوفي', image: 'https://images.unsplash.com/photo-1578482326236-80fdf6de5975?w=200&h=250&fit=crop' },
-            { name: 'كاكاشي', image: 'https://images.unsplash.com/photo-1591080876919-4e5de7a70a61?w=200&h=250&fit=crop' },
-            { name: 'مادارا', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=250&fit=crop' },
-            { name: 'ميسوكا', image: 'https://images.unsplash.com/photo-1524712245354-2c4e5ff7121d?w=200&h=250&fit=crop' },
-            { name: 'ناهي', image: 'https://images.unsplash.com/photo-1562584053-f1b284e7e6a3?w=200&h=250&fit=crop' },
-            { name: 'بيزركو', image: 'https://images.unsplash.com/photo-1599474968541-ba98dd28b82c?w=200&h=250&fit=crop' },
-            { name: 'ناروتو', image: 'https://images.unsplash.com/photo-1578482326236-80fdf6de5975?w=200&h=250&fit=crop' },
-            { name: 'توبارا', image: 'https://images.unsplash.com/photo-1535016120754-fd45c1d54fdf?w=200&h=250&fit=crop' },
-            { name: 'كيلاي', image: 'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=200&h=250&fit=crop' },
-            { name: 'روبين', image: 'https://images.unsplash.com/photo-1524712245354-2c4e5ff7121d?w=200&h=250&fit=crop' }
+            { name: 'يوجي إيتادوري', image: 'https://i.pinimg.com/564x/a8/4a/3c/a84a3c9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ميغومي فوشيغورو', image: 'https://i.pinimg.com/564x/b1/5b/4d/b15b4d9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'نوبارا كاكيساكي', image: 'https://i.pinimg.com/564x/c2/6c/5e/c26c5e9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ساتورو غوجو', image: 'https://i.pinimg.com/564x/d3/7d/6f/d37d6f9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ريومين سوكونا', image: 'https://i.pinimg.com/564x/e4/8e/7a/e48e7a9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'كينتو نانامي', image: 'https://i.pinimg.com/564x/f5/9f/8b/f59f8b9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ماكي زينين', image: 'https://i.pinimg.com/564x/a1/0a/1c/a10a1c9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'تومي إينوماكي', image: 'https://i.pinimg.com/564x/b2/1b/2d/b21b2d9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'باندا', image: 'https://i.pinimg.com/564x/c3/2c/3e/c32c3e9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'يوتا أوكوتسو', image: 'https://i.pinimg.com/564x/d4/3d/4f/d43d4f9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'سوغورو غيتو', image: 'https://i.pinimg.com/564x/e5/4e/5a/e54e5a9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ماهيتو', image: 'https://i.pinimg.com/564x/f6/5f/6b/f65f6b9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'جوغو', image: 'https://i.pinimg.com/564x/a7/6g/7c/a76g7c9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'هانامي', image: 'https://i.pinimg.com/564x/b8/7h/8d/b87h8d9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'داغون', image: 'https://i.pinimg.com/564x/c9/8i/9e/c98i9e9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'أوي تودو', image: 'https://i.pinimg.com/564x/d0/9j/af/d09jaf9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ماي زينين', image: 'https://i.pinimg.com/564x/e1/ak/bg/e1akbg9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'كاسومي ميوا', image: 'https://i.pinimg.com/564x/f2/bl/ch/f2blch9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'كوكيتشي ميوتا', image: 'https://i.pinimg.com/564x/a3/cm/di/a3cmdi9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'نوريتوشي كامو', image: 'https://i.pinimg.com/564x/b4/dn/ej/b4dnej9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'مومو نيشيميا', image: 'https://i.pinimg.com/564x/c5/eo/fk/c5eofk9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'شوكو إيري', image: 'https://i.pinimg.com/564x/d6/fp/gl/d6fpgl9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'كيوتاكا إيجيشي', image: 'https://i.pinimg.com/564x/e7/gq/hm/e7gqhm9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'يوشينوبو غاكانوجي', image: 'https://i.pinimg.com/564x/f8/hr/in/f8hrin9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'مي مي', image: 'https://i.pinimg.com/564x/a9/is/jo/a9isjo9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'أوي أوي', image: 'https://i.pinimg.com/564x/ba/jt/kp/bajtкp9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'تشوسو', image: 'https://i.pinimg.com/564x/cb/ku/lq/cbkulq9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'إيسو', image: 'https://i.pinimg.com/564x/dc/lv/mr/dclvmr9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'كيتشيزو', image: 'https://i.pinimg.com/564x/ed/mw/ns/edmwns9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'توجي فوشيغورو', image: 'https://i.pinimg.com/564x/fe/nx/ot/fenxot9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ناوبيتو زينين', image: 'https://i.pinimg.com/564x/af/oy/pu/afoypu9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ناوي زينين', image: 'https://i.pinimg.com/564x/bg/pz/qv/bgpzqv9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'يوكي تسوكومو', image: 'https://i.pinimg.com/564x/ch/qa/rw/chqarw9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'تينغين', image: 'https://i.pinimg.com/564x/di/rb/sx/dirbsx9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ماساميتشي ياغا', image: 'https://i.pinimg.com/564x/ej/sc/ty/ejscty9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'أتاكا نيتو', image: 'https://i.pinimg.com/564x/fk/td/uz/fktduz9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'جونبي يوشينو', image: 'https://i.pinimg.com/564x/al/ue/va/allueva9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'كينجاكو', image: 'https://i.pinimg.com/564x/bm/vf/wb/bmvfwb9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'أوراومي', image: 'https://i.pinimg.com/564x/cn/wg/xc/cnwgxc9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'هاروتا شيغيمو', image: 'https://i.pinimg.com/564x/do/xh/yd/doxhyd9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'جوزو كوميا', image: 'https://i.pinimg.com/564x/ep/yi/ze/epyize9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'جيرو أواساكا', image: 'https://i.pinimg.com/564x/fq/zj/af/fqzjaf9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'أوغامي', image: 'https://i.pinimg.com/564x/ar/ak/bg/arakbg9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ريكا أوريموتو', image: 'https://i.pinimg.com/564x/bs/bl/ch/bsblch9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'هيرومي هيغوروما', image: 'https://i.pinimg.com/564x/ct/cm/di/ctcmdi9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'هاجيمي كاشيمو', image: 'https://i.pinimg.com/564x/du/dn/ej/dudnej9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'ريو إيشيغوري', image: 'https://i.pinimg.com/564x/ev/eo/fk/evfeofk9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'تاكاكو أورو', image: 'https://i.pinimg.com/564x/fw/fp/gl/fwfpgl9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'فوميهيكو تاكابا', image: 'https://i.pinimg.com/564x/ax/gq/hm/axgqhm9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' },
+            { name: 'تسوميكي فوشيغورو', image: 'https://i.pinimg.com/564x/by/hr/in/byhrin9e8c4d5e2f1b9a8c7d6e5f4g3h.jpg' }
         ];
 
         let selectedPlayer1 = new Set();
@@ -89,24 +127,9 @@
             // إذا كان اللاعب الثاني، انتظر اللاعب الأول
             if (currentRole === 2) {
                 document.getElementById('instructionText').textContent = '⏳ في انتظار اللاعب الأول...';
-                startSyncPoll();
             }
 
             initGame();
-        }
-
-        // بدء استطلاع المزامنة
-        function startSyncPoll() {
-            syncInterval = setInterval(() => {
-                const rooms = JSON.parse(localStorage.getItem('activeRooms') || '{}');
-                const room = rooms[currentGameCode];
-                
-                if (room && room.player1 && room.player1.selected && room.player1.selected.length > 0) {
-                    document.getElementById('instructionText').textContent = '✨ اللاعب الأول اختار شخصياته!';
-                    clearInterval(syncInterval);
-                    updateFromStorage();
-                }
-            }, 500);
         }
 
         // تحديث البيانات من التخزين
@@ -115,10 +138,11 @@
             const room = rooms[currentGameCode];
             
             if (room) {
-                if (room.player1 && room.player1.selected) {
+                // تحديث الاختيارات للعرض فقط (بدون تعديل الاختيارات الشخصية)
+                if (room.player1 && room.player1.selected && currentRole === 2) {
                     selectedPlayer1 = new Set(room.player1.selected);
                 }
-                if (room.player2 && room.player2.selected) {
+                if (room.player2 && room.player2.selected && currentRole === 1) {
                     selectedPlayer2 = new Set(room.player2.selected);
                 }
                 updateDisplay();
@@ -175,7 +199,7 @@
                 div.className = 'character';
 
                 div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/667eea/FFFFFF?text=${char.name}'">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/667eea/FFFFFF?text=${encodeURIComponent(char.name)}'">
                     <div class="character-name">${char.name}</div>
                 `;
 
@@ -217,7 +241,7 @@
                 }
             });
 
-            // عرض اختيارات اللاعب الأول
+            // عرض اختيارات اللاعب الأول فقط
             const player1Display = document.getElementById('player1Display');
             player1Display.innerHTML = '';
             selectedPlayer1.forEach(index => {
@@ -225,13 +249,13 @@
                 const div = document.createElement('div');
                 div.className = 'character';
                 div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/FF6B6B/FFFFFF?text=${char.name}'">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/FF6B6B/FFFFFF?text=${encodeURIComponent(char.name)}'">
                     <div class="character-name">${char.name}</div>
                 `;
                 player1Display.appendChild(div);
             });
 
-            // عرض اختيارات اللاعب الثاني
+            // عرض اختيارات اللاعب الثاني فقط
             const player2Display = document.getElementById('player2Display');
             player2Display.innerHTML = '';
             selectedPlayer2.forEach(index => {
@@ -239,7 +263,7 @@
                 const div = document.createElement('div');
                 div.className = 'character';
                 div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/4ECDC4/FFFFFF?text=${char.name}'">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/4ECDC4/FFFFFF?text=${encodeURIComponent(char.name)}'">
                     <div class="character-name">${char.name}</div>
                 `;
                 player2Display.appendChild(div);
@@ -261,7 +285,7 @@
         loadGameData();
 
         // تحديث دوري للبيانات
-        setInterval(() => {
+        syncInterval = setInterval(() => {
             updateFromStorage();
         }, 1000);
 
