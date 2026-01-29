@@ -11,8 +11,8 @@
     <div id="startScreen" class="screen active">
         <div class="start-container">
             <div class="start-header">
-                <h1>🎮 لعبة اختيار الشخصيات</h1>
-                <p>العب مع أصدقائك أونلاين</p>
+                <h1>⚡ لعبة اختيار الشخصيات ⚡</h1>
+                <p>Jujutsu Kaisen Battle Arena</p>
             </div>
 
             <div class="start-buttons">
@@ -46,7 +46,7 @@
 
             <div class="player-info">
                 <p>أنت اللاعب الأول 👤</p>
-                <p id="statusMessage">في انتظار اللاعب ��لثاني...</p>
+                <p id="statusMessage">في انتظار اللاعب الثاني...</p>
             </div>
 
             <button class="cancel-btn" onclick="goBack()">العودة</button>
@@ -73,7 +73,6 @@
         let currentGameCode = null;
         let currentRole = null;
 
-        // دوال إدارة الشاشات
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
@@ -81,15 +80,12 @@
             document.getElementById(screenId).classList.add('active');
         }
 
-        // إنشاء لعبة جديدة
         function createGame() {
             currentGameCode = generateGameCode();
             currentRole = 1;
             document.getElementById('gameCode').value = currentGameCode;
             showScreen('waitingScreen');
             
-            // حفظ الكود في localStorage
-            localStorage.setItem('activeRooms', JSON.stringify(getActiveRooms()));
             let rooms = getActiveRooms();
             rooms[currentGameCode] = {
                 code: currentGameCode,
@@ -102,22 +98,18 @@
             };
             localStorage.setItem('activeRooms', JSON.stringify(rooms));
             
-            // بدء الاستطلاع للتحقق من انضمام لاعب آخر
             startWaitingPoll();
         }
 
-        // توليد كود عشوائي
         function generateGameCode() {
             return Math.random().toString(36).substring(2, 8).toUpperCase();
         }
 
-        // الحصول على الغرف النشطة
         function getActiveRooms() {
             const rooms = localStorage.getItem('activeRooms');
             return rooms ? JSON.parse(rooms) : {};
         }
 
-        // نسخ الكود
         function copyCode() {
             const codeInput = document.getElementById('gameCode');
             codeInput.select();
@@ -125,12 +117,10 @@
             alert('تم نسخ الكود! 📋');
         }
 
-        // عرض نموذج الانضمام
         function showJoinForm() {
             showScreen('joinScreen');
         }
 
-        // الانضمام إلى لعبة
         function joinGame() {
             const code = document.getElementById('joinCode').value.trim().toUpperCase();
             if (code.length === 6) {
@@ -138,16 +128,14 @@
                 
                 if (rooms[code]) {
                     currentGameCode = code;
-                    currentRole = 2; // اللاعب الثاني دائماً
+                    currentRole = 2;
                     
-                    // تحديث الغرفة
                     rooms[code].player2 = {
                         role: 2,
                         selected: []
                     };
                     localStorage.setItem('activeRooms', JSON.stringify(rooms));
                     
-                    // الانتقال للعبة
                     goToGame();
                 } else {
                     alert('الكود غير صحيح أو انتهت صلاحيته');
@@ -157,14 +145,12 @@
             }
         }
 
-        // الانتقال إلى اللعبة
         function goToGame() {
             sessionStorage.setItem('gameCode', currentGameCode);
             sessionStorage.setItem('playerRole', currentRole);
             window.location.href = 'game.html';
         }
 
-        // بدء استطلاع الانتظار
         function startWaitingPoll() {
             const pollInterval = setInterval(() => {
                 let rooms = getActiveRooms();
@@ -177,13 +163,11 @@
                 }
             }, 1000);
 
-            // إيقاف الاستطلاع بعد 30 دقيقة
             setTimeout(() => {
                 clearInterval(pollInterval);
             }, 30 * 60 * 1000);
         }
 
-        // العودة للشاشة السابقة
         function goBack() {
             currentGameCode = null;
             currentRole = null;
