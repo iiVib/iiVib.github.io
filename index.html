@@ -7,37 +7,135 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎮 لعبة اختيار الشخصيات</h1>
-            <p>اختر شخصياتك المفضلة</p>
-        </div>
-
-        <div class="game-wrapper">
-            <!-- قائمة الشخصيات المشتركة -->
-            <div class="characters-grid" id="mainGrid"></div>
-
-            <!-- اللاعب الأول -->
-            <div class="player-section player1">
-                <div class="player-title">👤 اختيارات اللاعب الأول</div>
-                <div class="characters-grid" id="player1Display"></div>
-                <button class="reset-btn" onclick="resetPlayer(1)">إعادة تعيين</button>
+    <!-- شاشة البداية -->
+    <div id="startScreen" class="screen active">
+        <div class="start-container">
+            <div class="start-header">
+                <h1>🎮 لعبة اختيار الشخصيات</h1>
+                <p>العب مع أصدقائك أونلاين</p>
             </div>
 
-            <!-- اللاعب الثاني -->
-            <div class="player-section player2">
-                <div class="player-title">👥 اختيارات اللاعب الثاني</div>
-                <div class="characters-grid" id="player2Display"></div>
-                <button class="reset-btn" onclick="resetPlayer(2)">إعادة تعيين</button>
+            <div class="start-buttons">
+                <button class="start-btn create-btn" onclick="createGame()">
+                    <span class="btn-icon">🔐</span>
+                    <span class="btn-text">إنشاء غرفة جديدة</span>
+                </button>
+
+                <button class="start-btn join-btn" onclick="showJoinForm()">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">الانضمام إلى غرفة</span>
+                </button>
             </div>
         </div>
+    </div>
 
-        <div class="info">
-            <p>✨ اضغط على الشخصية لتحديدها أو إلغاء التحديد - التحديدات آمنة وخاصة بك!</p>
+    <!-- شاشة الانتظار (منشئ الغرفة) -->
+    <div id="waitingScreen" class="screen">
+        <div class="waiting-container">
+            <div class="waiting-header">
+                <h2>⏳ في انتظار لاعب آخر</h2>
+            </div>
+
+            <div class="code-section">
+                <p class="code-label">شارك هذا الكود مع صديقك:</p>
+                <div class="code-display">
+                    <input type="text" id="gameCode" readonly class="code-input">
+                    <button class="copy-btn" onclick="copyCode()">📋 نسخ</button>
+                </div>
+            </div>
+
+            <div class="player-info">
+                <p>أنت اللاعب الأول 👤</p>
+                <p id="statusMessage">في انتظار اللاعب الثاني...</p>
+            </div>
+
+            <button class="cancel-btn" onclick="goBack()">العودة</button>
+        </div>
+    </div>
+
+    <!-- شاشة الانضمام -->
+    <div id="joinScreen" class="screen">
+        <div class="join-container">
+            <div class="join-header">
+                <h2>الانضمام إلى غرفة</h2>
+            </div>
+
+            <div class="join-form">
+                <input type="text" id="joinCode" placeholder="أدخل الكود هنا..." class="code-input">
+                <button class="join-btn" onclick="joinGame()">الانضمام 🎮</button>
+            </div>
+
+            <button class="cancel-btn" onclick="goBack()">العودة</button>
+        </div>
+    </div>
+
+    <!-- شاشة تحديد الدور -->
+    <div id="roleScreen" class="screen">
+        <div class="role-container">
+            <div class="role-header">
+                <h2>اختر دورك في اللعبة</h2>
+                <p>كود الغرفة: <span id="roleGameCode"></span></p>
+            </div>
+
+            <div class="role-buttons">
+                <button class="role-btn player1-role" onclick="selectRole(1)">
+                    <span class="role-emoji">👤</span>
+                    <span class="role-text">اللاعب الأول</span>
+                </button>
+
+                <button class="role-btn player2-role" onclick="selectRole(2)">
+                    <span class="role-emoji">👥</span>
+                    <span class="role-text">اللاعب الثاني</span>
+                </button>
+            </div>
+
+            <button class="cancel-btn" onclick="goBack()">العودة</button>
+        </div>
+    </div>
+
+    <!-- شاشة اللعبة الرئيسية -->
+    <div id="gameScreen" class="screen">
+        <div class="game-header-top">
+            <div class="game-info">
+                <p id="currentRole"></p>
+                <p id="gameCodeDisplay"></p>
+            </div>
+            <button class="exit-btn" onclick="exitGame()">خروج ❌</button>
+        </div>
+
+        <div class="container">
+            <div class="header">
+                <h1>🎮 لعبة اختيار الشخصيات</h1>
+                <p id="gameStatus">في انتظار اللاعب الآخر...</p>
+            </div>
+
+            <div class="game-wrapper">
+                <!-- قائمة الشخصيات المشتركة -->
+                <div class="characters-grid" id="mainGrid"></div>
+
+                <!-- اللاعب الأول -->
+                <div class="player-section player1">
+                    <div class="player-title">👤 اختيارات اللاعب الأول</div>
+                    <div class="characters-grid" id="player1Display"></div>
+                    <button class="reset-btn" onclick="resetPlayer(1)">إعادة تعيين</button>
+                </div>
+
+                <!-- اللاعب الثاني -->
+                <div class="player-section player2">
+                    <div class="player-title">👥 اختيارات اللاعب الثاني</div>
+                    <div class="characters-grid" id="player2Display"></div>
+                    <button class="reset-btn" onclick="resetPlayer(2)">إعادة تعيين</button>
+                </div>
+            </div>
+
+            <div class="info">
+                <p>✨ اضغط على الشخصية لتحديدها أو إلغاء التحديد - التحديدات آمنة وخاصة بك!</p>
+            </div>
         </div>
     </div>
 
     <script>
+        // متغيرات اللعبة
         const characters = [
             { name: 'فيجيتا', image: 'https://via.placeholder.com/120/FF6B6B/FFFFFF?text=Vegeta' },
             { name: 'زورو', image: 'https://via.placeholder.com/120/4ECDC4/FFFFFF?text=Zoro' },
@@ -55,7 +153,100 @@
 
         let selectedPlayer1 = new Set();
         let selectedPlayer2 = new Set();
+        let currentGameCode = null;
+        let currentRole = null;
+        let gameStarted = false;
 
+        // دوال إدارة الشاشات
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // إنشاء لعبة جديدة
+        function createGame() {
+            currentGameCode = generateGameCode();
+            currentRole = 1;
+            document.getElementById('gameCode').value = currentGameCode;
+            showScreen('waitingScreen');
+            startCodePolling();
+        }
+
+        // توليد كود عشوائي
+        function generateGameCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        // نسخ الكود
+        function copyCode() {
+            const codeInput = document.getElementById('gameCode');
+            codeInput.select();
+            document.execCommand('copy');
+            alert('تم نسخ الكود! 📋');
+        }
+
+        // عرض نموذج الانضمام
+        function showJoinForm() {
+            showScreen('joinScreen');
+        }
+
+        // الانضمام إلى لعبة
+        function joinGame() {
+            const code = document.getElementById('joinCode').value.trim().toUpperCase();
+            if (code.length === 6) {
+                currentGameCode = code;
+                document.getElementById('roleGameCode').textContent = code;
+                showScreen('roleScreen');
+            } else {
+                alert('الرجاء إدخال كود صحيح (6 أحرف)');
+            }
+        }
+
+        // اختيار الدور
+        function selectRole(role) {
+            currentRole = role;
+            startGame();
+        }
+
+        // بدء اللعبة
+        function startGame() {
+            gameStarted = true;
+            document.getElementById('currentRole').textContent = 
+                currentRole === 1 ? 'أنت اللاعب الأول 👤' : 'أنت اللاعب الثاني 👥';
+            document.getElementById('gameCodeDisplay').textContent = 
+                `كود الغرفة: ${currentGameCode}`;
+            document.getElementById('gameStatus').textContent = '🎮 اللعبة جاهزة!';
+            showScreen('gameScreen');
+            initGame();
+        }
+
+        // العودة للشاشة السابقة
+        function goBack() {
+            currentGameCode = null;
+            currentRole = null;
+            selectedPlayer1.clear();
+            selectedPlayer2.clear();
+            showScreen('startScreen');
+            document.getElementById('joinCode').value = '';
+        }
+
+        // الخروج من اللعبة
+        function exitGame() {
+            if (confirm('هل تريد الخروج من اللعبة؟')) {
+                goBack();
+            }
+        }
+
+        // بدء استطلاع الكود (محاكاة التحقق)
+        function startCodePolling() {
+            setTimeout(() => {
+                document.getElementById('statusMessage').textContent = '✅ تم الاتصال بلاعب آخر!';
+            }, 3000);
+        }
+
+        // دوال اللعبة الرئيسية
         function initGame() {
             renderMainGrid();
         }
@@ -74,22 +265,24 @@
                 `;
 
                 div.onclick = () => {
-                    // اختيار للاعب الأول
-                    if (selectedPlayer1.has(index)) {
-                        selectedPlayer1.delete(index);
-                    } else {
-                        selectedPlayer1.add(index);
+                    if (currentRole === 1) {
+                        if (selectedPlayer1.has(index)) {
+                            selectedPlayer1.delete(index);
+                        } else {
+                            selectedPlayer1.add(index);
+                        }
                     }
                     updateDisplay();
                 };
 
-                // كليك يميني للاعب الثاني
                 div.oncontextmenu = (e) => {
                     e.preventDefault();
-                    if (selectedPlayer2.has(index)) {
-                        selectedPlayer2.delete(index);
-                    } else {
-                        selectedPlayer2.add(index);
+                    if (currentRole === 2) {
+                        if (selectedPlayer2.has(index)) {
+                            selectedPlayer2.delete(index);
+                        } else {
+                            selectedPlayer2.add(index);
+                        }
                     }
                     updateDisplay();
                 };
@@ -101,10 +294,12 @@
         }
 
         function updateDisplay() {
-            // تحديث القائمة الرئيسية
             const mainGrid = document.getElementById('mainGrid');
             mainGrid.querySelectorAll('.character').forEach((char, index) => {
-                if (selectedPlayer1.has(index)) {
+                const player1Selected = selectedPlayer1.has(index);
+                const player2Selected = selectedPlayer2.has(index);
+                
+                if (player1Selected || player2Selected) {
                     char.classList.add('selected');
                 } else {
                     char.classList.remove('selected');
@@ -148,9 +343,6 @@
             }
             renderMainGrid();
         }
-
-        // تهيئة اللعبة عند تحميل الصفحة
-        initGame();
     </script>
 </body>
 </html>
