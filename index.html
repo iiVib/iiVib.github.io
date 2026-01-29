@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الشخصيات</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 لعبة اختيار الشخصيات</h1>
+            <p>اختر شخصياتك المفضلة</p>
+        </div>
+
+        <div class="game-wrapper">
+            <!-- قائمة الشخصيات المشتركة -->
+            <div class="characters-grid" id="mainGrid"></div>
+
+            <!-- اللاعب الأول -->
+            <div class="player-section player1">
+                <div class="player-title">👤 اختيارات اللاعب الأول</div>
+                <div class="characters-grid" id="player1Display"></div>
+                <button class="reset-btn" onclick="resetPlayer(1)">إعادة تعيين</button>
+            </div>
+
+            <!-- اللاعب الثاني -->
+            <div class="player-section player2">
+                <div class="player-title">👥 اختيارات اللاعب الثاني</div>
+                <div class="characters-grid" id="player2Display"></div>
+                <button class="reset-btn" onclick="resetPlayer(2)">إعادة تعيين</button>
+            </div>
+        </div>
+
+        <div class="info">
+            <p>✨ اضغط على الشخصية لتحديدها أو إلغاء التحديد - التحديدات آمنة وخاصة بك!</p>
+        </div>
+    </div>
+
+    <script>
+        const characters = [
+            { name: 'فيجيتا', image: 'https://via.placeholder.com/120/FF6B6B/FFFFFF?text=Vegeta' },
+            { name: 'زورو', image: 'https://via.placeholder.com/120/4ECDC4/FFFFFF?text=Zoro' },
+            { name: 'لوفي', image: 'https://via.placeholder.com/120/FFE66D/FFFFFF?text=Luffy' },
+            { name: 'كاكاشي', image: 'https://via.placeholder.com/120/95E1D3/FFFFFF?text=Kakashi' },
+            { name: 'مادارا', image: 'https://via.placeholder.com/120/F38181/FFFFFF?text=Madara' },
+            { name: 'ميسوكا', image: 'https://via.placeholder.com/120/AA96DA/FFFFFF?text=Misoka' },
+            { name: 'ناهي', image: 'https://via.placeholder.com/120/FCBAD3/FFFFFF?text=Nahi' },
+            { name: 'بيزركو', image: 'https://via.placeholder.com/120/A8E6CF/FFFFFF?text=Berzerk' },
+            { name: 'ناروتو', image: 'https://via.placeholder.com/120/FFD3B6/FFFFFF?text=Naruto' },
+            { name: 'توبارا', image: 'https://via.placeholder.com/120/FFAAA5/FFFFFF?text=Tsubara' },
+            { name: 'كيلاي', image: 'https://via.placeholder.com/120/FF8B94/FFFFFF?text=Kilai' },
+            { name: 'روبين', image: 'https://via.placeholder.com/120/B4A7D6/FFFFFF?text=Robin' }
+        ];
+
+        let selectedPlayer1 = new Set();
+        let selectedPlayer2 = new Set();
+
+        function initGame() {
+            renderMainGrid();
+        }
+
+        function renderMainGrid() {
+            const grid = document.getElementById('mainGrid');
+            grid.innerHTML = '';
+
+            characters.forEach((char, index) => {
+                const div = document.createElement('div');
+                div.className = 'character';
+
+                div.innerHTML = `
+                    <img src="${char.image}" alt="${char.name}">
+                    <div class="character-name">${char.name}</div>
+                `;
+
+                div.onclick = () => {
+                    // اختيار للاعب الأول
+                    if (selectedPlayer1.has(index)) {
+                        selectedPlayer1.delete(index);
+                    } else {
+                        selectedPlayer1.add(index);
+                    }
+                    updateDisplay();
+                };
+
+                // كليك يميني للاعب الثاني
+                div.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    if (selectedPlayer2.has(index)) {
+                        selectedPlayer2.delete(index);
+                    } else {
+                        selectedPlayer2.add(index);
+                    }
+                    updateDisplay();
+                };
+
+                grid.appendChild(div);
+            });
+
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            // تحديث القائمة الرئيسية
+            const mainGrid = document.getElementById('mainGrid');
+            mainGrid.querySelectorAll('.character').forEach((char, index) => {
+                if (selectedPlayer1.has(index)) {
+                    char.classList.add('selected');
+                } else {
+                    char.classList.remove('selected');
+                }
+            });
+
+            // عرض اختيارات اللاعب الأول
+            const player1Display = document.getElementById('player1Display');
+            player1Display.innerHTML = '';
+            selectedPlayer1.forEach(index => {
+                const char = characters[index];
+                const div = document.createElement('div');
+                div.className = 'character';
+                div.innerHTML = `
+                    <img src="${char.image}" alt="${char.name}">
+                    <div class="character-name">${char.name}</div>
+                `;
+                player1Display.appendChild(div);
+            });
+
+            // عرض اختيارات اللاعب الثاني
+            const player2Display = document.getElementById('player2Display');
+            player2Display.innerHTML = '';
+            selectedPlayer2.forEach(index => {
+                const char = characters[index];
+                const div = document.createElement('div');
+                div.className = 'character';
+                div.innerHTML = `
+                    <img src="${char.image}" alt="${char.name}">
+                    <div class="character-name">${char.name}</div>
+                `;
+                player2Display.appendChild(div);
+            });
+        }
+
+        function resetPlayer(playerNum) {
+            if (playerNum === 1) {
+                selectedPlayer1.clear();
+            } else {
+                selectedPlayer2.clear();
+            }
+            renderMainGrid();
+        }
+
+        // تهيئة اللعبة عند تحميل الصفحة
+        initGame();
+    </script>
+</body>
+</html>
