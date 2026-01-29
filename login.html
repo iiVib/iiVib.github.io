@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الشخصيات - تسجيل الدخول</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- شاشة البداية -->
+    <div id="startScreen" class="screen active">
+        <div class="start-container">
+            <div class="start-header">
+                <h1>🎮 لعبة اختيار الشخصيات</h1>
+                <p>العب مع أصدقائك أونلاين</p>
+            </div>
+
+            <div class="start-buttons">
+                <button class="start-btn create-btn" onclick="createGame()">
+                    <span class="btn-icon">🔐</span>
+                    <span class="btn-text">إنشاء غرفة جديدة</span>
+                </button>
+
+                <button class="start-btn join-btn" onclick="showJoinForm()">
+                    <span class="btn-icon">🔓</span>
+                    <span class="btn-text">الانضمام إلى غرفة</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة الانتظار (منشئ الغرفة) -->
+    <div id="waitingScreen" class="screen">
+        <div class="waiting-container">
+            <div class="waiting-header">
+                <h2>⏳ في انتظار لاعب آخر</h2>
+            </div>
+
+            <div class="code-section">
+                <p class="code-label">شارك هذا الكود مع صديقك:</p>
+                <div class="code-display">
+                    <input type="text" id="gameCode" readonly class="code-input">
+                    <button class="copy-btn" onclick="copyCode()">📋 نسخ</button>
+                </div>
+            </div>
+
+            <div class="player-info">
+                <p>أنت اللاعب الأول 👤</p>
+                <p id="statusMessage">في انتظار اللاعب الثاني...</p>
+            </div>
+
+            <button class="cancel-btn" onclick="goBack()">العودة</button>
+        </div>
+    </div>
+
+    <!-- شاشة الانضمام -->
+    <div id="joinScreen" class="screen">
+        <div class="join-container">
+            <div class="join-header">
+                <h2>الانضمام إلى غرفة</h2>
+            </div>
+
+            <div class="join-form">
+                <input type="text" id="joinCode" placeholder="أدخل الكود هنا..." class="code-input">
+                <button class="join-btn-form" onclick="joinGame()">الانضمام 🎮</button>
+            </div>
+
+            <button class="cancel-btn" onclick="goBack()">العودة</button>
+        </div>
+    </div>
+
+    <!-- شاشة تحديد الدور -->
+    <div id="roleScreen" class="screen">
+        <div class="role-container">
+            <div class="role-header">
+                <h2>اختر دورك في اللعبة</h2>
+                <p>كود الغرفة: <span id="roleGameCode"></span></p>
+            </div>
+
+            <div class="role-buttons">
+                <button class="role-btn player1-role" onclick="selectRole(1)">
+                    <span class="role-emoji">👤</span>
+                    <span class="role-text">اللاعب الأول</span>
+                </button>
+
+                <button class="role-btn player2-role" onclick="selectRole(2)">
+                    <span class="role-emoji">👥</span>
+                    <span class="role-text">اللاعب الثاني</span>
+                </button>
+            </div>
+
+            <button class="cancel-btn" onclick="goBack()">العودة</button>
+        </div>
+    </div>
+
+    <script>
+        let currentGameCode = null;
+        let currentRole = null;
+
+        // دوال إدارة الشاشات
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // إنشاء لعبة جديدة
+        function createGame() {
+            currentGameCode = generateGameCode();
+            currentRole = 1;
+            document.getElementById('gameCode').value = currentGameCode;
+            showScreen('waitingScreen');
+        }
+
+        // توليد كود عشوائي
+        function generateGameCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        // نسخ الكود
+        function copyCode() {
+            const codeInput = document.getElementById('gameCode');
+            codeInput.select();
+            document.execCommand('copy');
+            alert('تم نسخ الكود! 📋');
+        }
+
+        // عرض نموذج الانضمام
+        function showJoinForm() {
+            showScreen('joinScreen');
+        }
+
+        // الانضمام إلى لعبة
+        function joinGame() {
+            const code = document.getElementById('joinCode').value.trim().toUpperCase();
+            if (code.length === 6) {
+                currentGameCode = code;
+                document.getElementById('roleGameCode').textContent = code;
+                showScreen('roleScreen');
+            } else {
+                alert('الرجاء إدخال كود صحيح (6 أحرف)');
+            }
+        }
+
+        // اختيار الدور والذهاب للعبة
+        function selectRole(role) {
+            currentRole = role;
+            // حفظ البيانات في sessionStorage
+            sessionStorage.setItem('gameCode', currentGameCode);
+            sessionStorage.setItem('playerRole', currentRole);
+            // الانتقال إلى صفحة اللعبة
+            window.location.href = 'game.html';
+        }
+
+        // العودة للشاشة السابقة
+        function goBack() {
+            currentGameCode = null;
+            currentRole = null;
+            showScreen('startScreen');
+            document.getElementById('joinCode').value = '';
+        }
+    </script>
+</body>
+</html>
