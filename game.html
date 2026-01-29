@@ -22,6 +22,74 @@
         </div>
     </div>
 
+    <!-- Background Music -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Control Panel -->
+    <div class="music-control-panel">
+        <!-- Music Toggle Button -->
+        <button id="musicToggle" class="music-toggle" title="تشغيل/إيقاف الموسيقى">
+            🔊
+        </button>
+
+        <!-- OST Selector Button -->
+        <button class="ost-selector-btn" onclick="showOSTMenu()" title="اختر الموسيقى">
+            🎵
+        </button>
+
+        <!-- Volume Control -->
+        <div class="volume-control" id="volumeControl" style="display: none;">
+            <span class="volume-icon">🔉</span>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5">
+            <span id="volumeLabel">50%</span>
+        </div>
+    </div>
+
+    <!-- OST Menu Modal -->
+    <div id="ostModal" class="ost-modal">
+        <div class="ost-modal-content">
+            <span class="ost-close" onclick="closeOSTMenu()">&times;</span>
+            <h2>اختر الموسيقى 🎵</h2>
+            
+            <div class="ost-list">
+                <!-- Jujutsu Kaisen OST -->
+                <div class="ost-item">
+                    <button class="ost-main-btn" onclick="toggleOSTSubmenu('jjk')">
+                        Jujutsu Kaisen OST 🔥
+                    </button>
+                    <div id="jjk-submenu" class="ost-submenu" style="display: none;">
+                        <button class="ost-sub-btn" onclick="selectOST('musics/jjk-music', 'Jujutsu Kaisen (English)')">
+                            🇬🇧 النسخة الإنجليزية
+                        </button>
+                        <button class="ost-sub-btn" onclick="selectOST('musics/jjk-music-ar', 'Jujutsu Kaisen (Arabic)')">
+                            🇸🇦 النسخة العربية
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Youjo Senki OST -->
+                <div class="ost-item">
+                    <button class="ost-main-btn" onclick="selectOST('musics/senki-music', 'Youjo Senki OST')">
+                        Youjo Senki OST ⚔️
+                    </button>
+                </div>
+
+                <!-- Mahoraga vs Sukuna OST -->
+                <div class="ost-item">
+                    <button class="ost-main-btn" onclick="selectOST('musics/mahoragavssukuna-music', 'Mahoraga vs Sukuna')">
+                        Mahoraga vs Sukuna OST ⚡
+                    </button>
+                </div>
+            </div>
+
+            <div class="ost-current">
+                <p>الموسيقى الحالية: <span id="currentOST">Jujutsu Kaisen (English)</span></p>
+            </div>
+        </div>
+    </div>
+
     <div class="game-screen">
         <div class="game-header-top">
             <div class="game-info">
@@ -78,7 +146,7 @@
             { name: 'Suguru Geto', image: 'images/11.jfif', details: 'مستخدم تلاعب باللعنات وخصم غوجو السابق. / A Cursed Spirit Manipulation user and Gojo\'s former rival.' },
             { name: 'Mahito', image: 'images/12.jfif', details: 'لعنة ولدت من كراهية البشر، يغير شكل الأرواح. / A curse born from human hatred; he reshapes souls.' },
             { name: 'Jogo', image: 'images/13.jfif', details: 'لعنة بركانية قوية تسعى لاستبدال البشر باللعنات. / A powerful volcano-based curse seeking to replace humans.' },
-            { name: 'Hanami', image: 'images/14.jfif', details: 'لعنة تمثل الغابة وتستخدم النباتات في قتالها. / A curse representing the forest, using plants in battle.' },
+            { name: 'Hanami', image: 'images/14.jfif', details: 'لعنة تمثل الغابة وتستخدم ا��نباتات في قتالها. / A curse representing the forest, using plants in battle.' },
             { name: 'Dagon', image: 'images/15.jfif', details: 'لعنة بدأت كرحم ملعون مائي ثم تطورت لكيان قوي. / A curse that started as a water-based womb then evolved.' },
             { name: 'Aoi Todo', image: 'images/16.jfif', details: 'ساحر قوي من مدرسة كيوتو يستخدم تقنية "بوغي ووغي". / A strong Kyoto student who uses the "Boogie Woogie" technique.' },
             { name: 'Mai Zenin', image: 'images/17.jfif', details: 'أخت ماكي وتستخدم المسدسات لتعزيز طاقتها الملعونة. / Maki\'s sister who uses firearms to channel her cursed energy.' },
@@ -92,7 +160,7 @@
             { name: 'Mei Mei', image: 'images/25.jfif', details: 'ساحرة مستقلة تحب المال وتتحكم في الغربان. / An independent sorcerer who loves money and controls crows.' },
             { name: 'Ui Ui', image: 'images/26.jfif', details: 'شقيق مي مي المخلص جداً لقدراتها. / Mei Mei\'s younger brother, deeply devoted to her.' },
             { name: 'Choso', image: 'images/27.jfif', details: 'الأخ الأكبر للأرحام الملعونة ويستخدم تقنية الدم. / The eldest of the Cursed Wombs, using blood techniques.' },
-            { name: 'Eso', image: 'images/28.jfif', details: 'أحد الأرحام الملعونة ويمتلك تقنية الدم السام. / One of the Cursed Wombs with poisonous blood techniques.' },
+            { name: 'Eso', image: 'images/28.jfif', details: 'أحد الأرحام الملعونة ويمتلك تقنية ا��دم السام. / One of the Cursed Wombs with poisonous blood techniques.' },
             { name: 'Kechizu', image: 'images/29.jfif', details: 'الأخ الأصغر للأرحام الملعونة بمظهر غير بشري. / The youngest Cursed Womb brother with a non-human appearance.' },
             { name: 'Toji Fushiguro', image: 'images/30.jfif', details: 'قاتل السحرة الذي كاد أن يقتل غوجو. / The Sorcerer Killer who nearly defeated Gojo.' },
             { name: 'Naobito Zenin', image: 'images/31.jfif', details: 'رئيس عائلة زينين ويمتاز بسرعة فائقة جداً. / Head of the Zenin family, known for incredible speed.' },
@@ -106,7 +174,7 @@
             { name: 'Uraume', image: 'images/39.jfif', details: 'خادم سوكونا المخلص ويمتلك تقنية تجميد الجليد. / Sukuna\'s loyal servant with ice-freezing techniques.' },
             { name: 'Haruta Shigemo', image: 'images/40.jfif', details: 'جبان يعتمد على "المعجزات" المخزنة للنجاة. / A coward relying on stored "miracles" to survive.' },
             { name: 'Juzo Kumiya', image: 'images/41.jfif', details: 'صانع أدوات ملعونة يحب صنع أشياء من أجساد البشر. / A cursed tool maker who likes crafting items from humans.' },
-            { name: 'Jiro Awasaka', image: 'images/42.jfif', details: 'مستخدم لعنات عجوز يمتلك تقنية "ال��ضاد". / An old curse user with the "Inverse" technique.' },
+            { name: 'Jiro Awasaka', image: 'images/42.jfif', details: 'مستخدم لعنات عجوز يمتلك تقنية "المضاد". / An old curse user with the "Inverse" technique.' },
             { name: 'Kinji Hakari', image: 'images/43.jfif', details: 'طالب سنة ثالثة موقوف، يعتمد على الحظ والقمار في قتاله. / A suspended 3rd-year student who relies on luck and gambling.' },
             { name: 'Rika Orimoto', image: 'images/44.jfif', details: 'الروح الملعونة التي كانت ترافق يوتا وتلقب بالملكة. / The cursed spirit that accompanied Yuta, known as the Queen.' },
             { name: 'Hiromi Higuruma', image: 'images/45.jfif', details: 'عبقري قانوني يمتلك تقنية المحكمة والمطرقة. / A legal genius with a courtroom and gavel-based technique.' },
@@ -122,6 +190,93 @@
         let currentGameCode = null;
         let currentRole = null;
         let syncInterval = null;
+        let isMusicPlaying = true;
+        let currentOSTPath = 'musics/jjk-music';
+        let currentOSTName = 'Jujutsu Kaisen (English)';
+
+        const bgMusic = document.getElementById('bgMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeLabel = document.getElementById('volumeLabel');
+        const volumeControl = document.getElementById('volumeControl');
+        const ostModal = document.getElementById('ostModal');
+
+        // إعدادات الصوت
+        bgMusic.volume = 0.5;
+
+        // تشغيل/إيقاف الموسيقى
+        musicToggle.addEventListener('click', function() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicToggle.textContent = '🔇';
+                musicToggle.style.background = 'linear-gradient(135deg, #666666 0%, #444444 100%)';
+                isMusicPlaying = false;
+            } else {
+                bgMusic.play();
+                musicToggle.textContent = '🔊';
+                musicToggle.style.background = 'linear-gradient(135deg, #FF3D3D 0%, #CC0000 100%)';
+                isMusicPlaying = true;
+            }
+        });
+
+        // التحكم في مستوى الصوت
+        volumeSlider.addEventListener('input', function() {
+            bgMusic.volume = this.value;
+            volumeLabel.textContent = Math.round(this.value * 100) + '%';
+        });
+
+        // عرض/إخفاء التحكم في مستوى الصوت
+        document.querySelector('.ost-selector-btn').addEventListener('click', function() {
+            volumeControl.style.display = volumeControl.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        // عرض قائمة الموسيقى
+        function showOSTMenu() {
+            ostModal.style.display = 'block';
+            volumeControl.style.display = 'none';
+        }
+
+        // إغلاق قائمة الموسيقى
+        function closeOSTMenu() {
+            ostModal.style.display = 'none';
+        }
+
+        // تبديل القائمة الفرعية
+        function toggleOSTSubmenu(menu) {
+            const submenu = document.getElementById(menu + '-submenu');
+            submenu.style.display = submenu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // اختيار الموسيقى
+        function selectOST(path, name) {
+            currentOSTPath = path;
+            currentOSTName = name;
+            
+            // تحديث الموسيقى
+            bgMusic.src = path + '/track1.mp3';
+            bgMusic.currentTime = 0;
+            
+            if (isMusicPlaying) {
+                bgMusic.play();
+            }
+
+            document.getElementById('currentOST').textContent = name;
+            closeOSTMenu();
+            
+            // حفظ الاختيار
+            localStorage.setItem('selectedOST', JSON.stringify({path, name}));
+        }
+
+        // إغلاق المودال عند الضغط خارجه
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailsModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+            if (event.target == ostModal) {
+                ostModal.style.display = 'none';
+            }
+        }
 
         // فتح Modal للتفاصيل
         function openModal(character) {
@@ -136,18 +291,22 @@
             document.getElementById('detailsModal').style.display = 'none';
         }
 
-        // إغلاق Modal عند الضغط خارجه
-        window.onclick = function(event) {
-            const modal = document.getElementById('detailsModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-
         // تحميل البيانات عند فتح الصفحة
         function loadGameData() {
             currentGameCode = sessionStorage.getItem('gameCode');
             currentRole = parseInt(sessionStorage.getItem('playerRole'));
+            
+            const ostPath = sessionStorage.getItem('ostPath');
+            const ostName = sessionStorage.getItem('ostName');
+            
+            if (ostPath && ostName) {
+                currentOSTPath = ostPath;
+                currentOSTName = ostName;
+                bgMusic.src = ostPath + '/track1.mp3';
+                document.getElementById('currentOST').textContent = ostName;
+            } else {
+                loadSavedOST();
+            }
 
             if (!currentGameCode || !currentRole) {
                 alert('بيانات اللعبة غير صحيحة. يرجى العودة والبدء من جديد.');
@@ -166,7 +325,21 @@
             initGame();
         }
 
-        // تحديث البيانات من التخزين
+        // تحميل الموسيقى المحفوظة
+        function loadSavedOST() {
+            const saved = localStorage.getItem('selectedOST');
+            if (saved) {
+                const {path, name} = JSON.parse(saved);
+                currentOSTPath = path;
+                currentOSTName = name;
+                bgMusic.src = path + '/track1.mp3';
+                document.getElementById('currentOST').textContent = name;
+            } else {
+                bgMusic.src = 'musics/jjk-music/track1.mp3';
+            }
+        }
+
+        // تحديث البيانات من ال��خزين
         function updateFromStorage() {
             const rooms = JSON.parse(localStorage.getItem('activeRooms') || '{}');
             const room = rooms[currentGameCode];
