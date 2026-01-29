@@ -46,7 +46,7 @@
 
             <div class="player-info">
                 <p>أنت اللاعب الأول 👤</p>
-                <p id="statusMessage">في انتظار اللاعب الثاني...</p>
+                <p id="statusMessage">في انتظار اللاعب ��لثاني...</p>
             </div>
 
             <button class="cancel-btn" onclick="goBack()">العودة</button>
@@ -63,30 +63,6 @@
             <div class="join-form">
                 <input type="text" id="joinCode" placeholder="أدخل الكود هنا..." class="code-input">
                 <button class="join-btn-form" onclick="joinGame()">الانضمام 🎮</button>
-            </div>
-
-            <button class="cancel-btn" onclick="goBack()">العودة</button>
-        </div>
-    </div>
-
-    <!-- شاشة تحديد الدور -->
-    <div id="roleScreen" class="screen">
-        <div class="role-container">
-            <div class="role-header">
-                <h2>اختر دورك في اللعبة</h2>
-                <p>كود الغرفة: <span id="roleGameCode"></span></p>
-            </div>
-
-            <div class="role-buttons">
-                <button class="role-btn player1-role" onclick="selectRole(1)">
-                    <span class="role-emoji">👤</span>
-                    <span class="role-text">اللاعب الأول</span>
-                </button>
-
-                <button class="role-btn player2-role" onclick="selectRole(2)">
-                    <span class="role-emoji">👥</span>
-                    <span class="role-text">اللاعب الثاني</span>
-                </button>
             </div>
 
             <button class="cancel-btn" onclick="goBack()">العودة</button>
@@ -111,11 +87,34 @@
             currentRole = 1;
             document.getElementById('gameCode').value = currentGameCode;
             showScreen('waitingScreen');
+            
+            // حفظ الكود في localStorage
+            localStorage.setItem('activeRooms', JSON.stringify(getActiveRooms()));
+            let rooms = getActiveRooms();
+            rooms[currentGameCode] = {
+                code: currentGameCode,
+                player1: {
+                    role: 1,
+                    selected: []
+                },
+                player2: null,
+                createdAt: Date.now()
+            };
+            localStorage.setItem('activeRooms', JSON.stringify(rooms));
+            
+            // بدء الاستطلاع للتحقق من انضمام لاعب آخر
+            startWaitingPoll();
         }
 
         // توليد كود عشوائي
         function generateGameCode() {
             return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        // الحصول على الغرف النشطة
+        function getActiveRooms() {
+            const rooms = localStorage.getItem('activeRooms');
+            return rooms ? JSON.parse(rooms) : {};
         }
 
         // نسخ الكود
@@ -135,22 +134,53 @@
         function joinGame() {
             const code = document.getElementById('joinCode').value.trim().toUpperCase();
             if (code.length === 6) {
-                currentGameCode = code;
-                document.getElementById('roleGameCode').textContent = code;
-                showScreen('roleScreen');
+                let rooms = getActiveRooms();
+                
+                if (rooms[code]) {
+                    currentGameCode = code;
+                    currentRole = 2; // اللاعب الثاني دائماً
+                    
+                    // تحديث الغرفة
+                    rooms[code].player2 = {
+                        role: 2,
+                        selected: []
+                    };
+                    localStorage.setItem('activeRooms', JSON.stringify(rooms));
+                    
+                    // الانتقال للعبة
+                    goToGame();
+                } else {
+                    alert('الكود غير صحيح أو انتهت صلاحيته');
+                }
             } else {
                 alert('الرجاء إدخال كود صحيح (6 أحرف)');
             }
         }
 
-        // اختيار الدور والذهاب للعبة
-        function selectRole(role) {
-            currentRole = role;
-            // حفظ البيانات في sessionStorage
+        // الانتقال إلى اللعبة
+        function goToGame() {
             sessionStorage.setItem('gameCode', currentGameCode);
             sessionStorage.setItem('playerRole', currentRole);
-            // الانتقال إلى صفحة اللعبة
             window.location.href = 'game.html';
+        }
+
+        // بدء استطلاع الانتظار
+        function startWaitingPoll() {
+            const pollInterval = setInterval(() => {
+                let rooms = getActiveRooms();
+                if (rooms[currentGameCode] && rooms[currentGameCode].player2) {
+                    clearInterval(pollInterval);
+                    document.getElementById('statusMessage').textContent = '✅ تم الاتصال بلاعب آخر!';
+                    setTimeout(() => {
+                        goToGame();
+                    }, 1500);
+                }
+            }, 1000);
+
+            // إيقاف الاستطلاع بعد 30 دقيقة
+            setTimeout(() => {
+                clearInterval(pollInterval);
+            }, 30 * 60 * 1000);
         }
 
         // العودة للشاشة السابقة
