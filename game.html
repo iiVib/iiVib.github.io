@@ -42,7 +42,7 @@
             </div>
 
             <div class="info">
-                <p>✨ اضغط على الشخصية لتحديدها أو إلغاء التحديد - التحديدات آمنة وخاصة بك!</p>
+                <p id="instructionText">✨ اضغط على الشخصية لتحديدها أو إلغاء التحديد</p>
             </div>
         </div>
     </div>
@@ -50,24 +50,25 @@
     <script>
         // متغيرات اللعبة
         const characters = [
-            { name: 'فيجيتا', image: 'https://via.placeholder.com/120/FF6B6B/FFFFFF?text=Vegeta' },
-            { name: 'زورو', image: 'https://via.placeholder.com/120/4ECDC4/FFFFFF?text=Zoro' },
-            { name: 'لوفي', image: 'https://via.placeholder.com/120/FFE66D/FFFFFF?text=Luffy' },
-            { name: 'كاكاشي', image: 'https://via.placeholder.com/120/95E1D3/FFFFFF?text=Kakashi' },
-            { name: 'مادارا', image: 'https://via.placeholder.com/120/F38181/FFFFFF?text=Madara' },
-            { name: 'ميسوكا', image: 'https://via.placeholder.com/120/AA96DA/FFFFFF?text=Misoka' },
-            { name: 'ناهي', image: 'https://via.placeholder.com/120/FCBAD3/FFFFFF?text=Nahi' },
-            { name: 'بيزركو', image: 'https://via.placeholder.com/120/A8E6CF/FFFFFF?text=Berzerk' },
-            { name: 'ناروتو', image: 'https://via.placeholder.com/120/FFD3B6/FFFFFF?text=Naruto' },
-            { name: 'توبارا', image: 'https://via.placeholder.com/120/FFAAA5/FFFFFF?text=Tsubara' },
-            { name: 'كيلاي', image: 'https://via.placeholder.com/120/FF8B94/FFFFFF?text=Kilai' },
-            { name: 'روبين', image: 'https://via.placeholder.com/120/B4A7D6/FFFFFF?text=Robin' }
+            { name: 'فيجيتا', image: 'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=200&h=250&fit=crop' },
+            { name: 'زورو', image: 'https://images.unsplash.com/photo-1535016120754-fd45c1d54fdf?w=200&h=250&fit=crop' },
+            { name: 'لوفي', image: 'https://images.unsplash.com/photo-1578482326236-80fdf6de5975?w=200&h=250&fit=crop' },
+            { name: 'كاكاشي', image: 'https://images.unsplash.com/photo-1591080876919-4e5de7a70a61?w=200&h=250&fit=crop' },
+            { name: 'مادارا', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=250&fit=crop' },
+            { name: 'ميسوكا', image: 'https://images.unsplash.com/photo-1524712245354-2c4e5ff7121d?w=200&h=250&fit=crop' },
+            { name: 'ناهي', image: 'https://images.unsplash.com/photo-1562584053-f1b284e7e6a3?w=200&h=250&fit=crop' },
+            { name: 'بيزركو', image: 'https://images.unsplash.com/photo-1599474968541-ba98dd28b82c?w=200&h=250&fit=crop' },
+            { name: 'ناروتو', image: 'https://images.unsplash.com/photo-1578482326236-80fdf6de5975?w=200&h=250&fit=crop' },
+            { name: 'توبارا', image: 'https://images.unsplash.com/photo-1535016120754-fd45c1d54fdf?w=200&h=250&fit=crop' },
+            { name: 'كيلاي', image: 'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=200&h=250&fit=crop' },
+            { name: 'روبين', image: 'https://images.unsplash.com/photo-1524712245354-2c4e5ff7121d?w=200&h=250&fit=crop' }
         ];
 
         let selectedPlayer1 = new Set();
         let selectedPlayer2 = new Set();
         let currentGameCode = null;
         let currentRole = null;
+        let syncInterval = null;
 
         // تحميل البيانات عند فتح الصفحة
         function loadGameData() {
@@ -85,12 +86,76 @@
             document.getElementById('currentRole').textContent = roleText;
             document.getElementById('gameCodeDisplay').textContent = `كود الغرفة: ${currentGameCode}`;
 
+            // إذا كان اللاعب الثاني، انتظر اللاعب الأول
+            if (currentRole === 2) {
+                document.getElementById('instructionText').textContent = '⏳ في انتظار اللاعب الأول...';
+                startSyncPoll();
+            }
+
             initGame();
+        }
+
+        // بدء استطلاع المزامنة
+        function startSyncPoll() {
+            syncInterval = setInterval(() => {
+                const rooms = JSON.parse(localStorage.getItem('activeRooms') || '{}');
+                const room = rooms[currentGameCode];
+                
+                if (room && room.player1 && room.player1.selected && room.player1.selected.length > 0) {
+                    document.getElementById('instructionText').textContent = '✨ اللاعب الأول اختار شخصياته!';
+                    clearInterval(syncInterval);
+                    updateFromStorage();
+                }
+            }, 500);
+        }
+
+        // تحديث البيانات من التخزين
+        function updateFromStorage() {
+            const rooms = JSON.parse(localStorage.getItem('activeRooms') || '{}');
+            const room = rooms[currentGameCode];
+            
+            if (room) {
+                if (room.player1 && room.player1.selected) {
+                    selectedPlayer1 = new Set(room.player1.selected);
+                }
+                if (room.player2 && room.player2.selected) {
+                    selectedPlayer2 = new Set(room.player2.selected);
+                }
+                updateDisplay();
+            }
+        }
+
+        // حفظ الاختيارات
+        function saveSelections() {
+            const rooms = JSON.parse(localStorage.getItem('activeRooms') || '{}');
+            if (!rooms[currentGameCode]) {
+                rooms[currentGameCode] = { code: currentGameCode };
+            }
+
+            if (currentRole === 1) {
+                if (!rooms[currentGameCode].player1) {
+                    rooms[currentGameCode].player1 = {};
+                }
+                rooms[currentGameCode].player1.selected = Array.from(selectedPlayer1);
+            } else {
+                if (!rooms[currentGameCode].player2) {
+                    rooms[currentGameCode].player2 = {};
+                }
+                rooms[currentGameCode].player2.selected = Array.from(selectedPlayer2);
+            }
+
+            localStorage.setItem('activeRooms', JSON.stringify(rooms));
         }
 
         // الخروج من اللعبة
         function exitGame() {
             if (confirm('هل تريد الخروج من اللعبة؟')) {
+                if (syncInterval) {
+                    clearInterval(syncInterval);
+                }
+                const rooms = JSON.parse(localStorage.getItem('activeRooms') || '{}');
+                delete rooms[currentGameCode];
+                localStorage.setItem('activeRooms', JSON.stringify(rooms));
                 sessionStorage.clear();
                 window.location.href = 'login.html';
             }
@@ -110,7 +175,7 @@
                 div.className = 'character';
 
                 div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/667eea/FFFFFF?text=${char.name}'">
                     <div class="character-name">${char.name}</div>
                 `;
 
@@ -121,18 +186,14 @@
                         } else {
                             selectedPlayer1.add(index);
                         }
-                    }
-                    updateDisplay();
-                };
-
-                div.oncontextmenu = (e) => {
-                    e.preventDefault();
-                    if (currentRole === 2) {
+                        saveSelections();
+                    } else {
                         if (selectedPlayer2.has(index)) {
                             selectedPlayer2.delete(index);
                         } else {
                             selectedPlayer2.add(index);
                         }
+                        saveSelections();
                     }
                     updateDisplay();
                 };
@@ -164,7 +225,7 @@
                 const div = document.createElement('div');
                 div.className = 'character';
                 div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/FF6B6B/FFFFFF?text=${char.name}'">
                     <div class="character-name">${char.name}</div>
                 `;
                 player1Display.appendChild(div);
@@ -178,7 +239,7 @@
                 const div = document.createElement('div');
                 div.className = 'character';
                 div.innerHTML = `
-                    <img src="${char.image}" alt="${char.name}">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='https://via.placeholder.com/120/4ECDC4/FFFFFF?text=${char.name}'">
                     <div class="character-name">${char.name}</div>
                 `;
                 player2Display.appendChild(div);
@@ -186,16 +247,30 @@
         }
 
         function resetPlayer(playerNum) {
-            if (playerNum === 1) {
+            if (playerNum === 1 && currentRole === 1) {
                 selectedPlayer1.clear();
-            } else {
+                saveSelections();
+            } else if (playerNum === 2 && currentRole === 2) {
                 selectedPlayer2.clear();
+                saveSelections();
             }
             renderMainGrid();
         }
 
         // تحميل اللعبة عند فتح الصفحة
         loadGameData();
+
+        // تحديث دوري للبيانات
+        setInterval(() => {
+            updateFromStorage();
+        }, 1000);
+
+        // تنظيف عند إغلاق الصفحة
+        window.addEventListener('beforeunload', () => {
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+        });
     </script>
 </body>
 </html>
