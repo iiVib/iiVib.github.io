@@ -100,10 +100,9 @@ body {
     font-size: 1.1em;
 }
 
-/* شاشات الانتظار والانضمام والدور */
+/* شاشات الانتظار والانضمام */
 .waiting-container,
-.join-container,
-.role-container {
+.join-container {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     padding: 40px;
@@ -113,8 +112,7 @@ body {
 }
 
 .waiting-header h2,
-.join-header h2,
-.role-header h2 {
+.join-header h2 {
     color: #333;
     margin-bottom: 30px;
     text-align: center;
@@ -181,54 +179,6 @@ body {
 #statusMessage {
     color: #667eea;
     font-weight: bold;
-}
-
-/* شاشة الدور */
-.role-header p {
-    color: #666;
-    margin-top: 10px;
-    font-size: 1.1em;
-}
-
-.role-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.role-btn {
-    padding: 30px;
-    border: 2px solid #ddd;
-    border-radius: 15px;
-    background: white;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.player1-role:hover {
-    border-color: #FF6B6B;
-    background: #fff5f5;
-    transform: translateY(-5px);
-}
-
-.player2-role:hover {
-    border-color: #4ECDC4;
-    background: #f0fffe;
-    transform: translateY(-5px);
-}
-
-.role-emoji {
-    font-size: 2.5em;
-}
-
-.role-text {
-    font-weight: bold;
-    color: #333;
 }
 
 .cancel-btn {
@@ -451,10 +401,6 @@ body {
 
     .characters-grid {
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    }
-
-    .role-buttons {
-        grid-template-columns: 1fr;
     }
 
     .game-header-top {
