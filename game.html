@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Modal للتفاصيل -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-image">
+                <img id="modalImage" src="" alt="">
+            </div>
+            <div class="modal-text">
+                <h2 id="modalName"></h2>
+                <p class="details-label">Some Details :</p>
+                <p id="modalDetails"></p>
+            </div>
+        </div>
+    </div>
+
     <div class="game-screen">
         <div class="game-header-top">
             <div class="game-info">
@@ -42,7 +57,7 @@
             </div>
 
             <div class="info">
-                <p id="instructionText">✨ اضغط على الشخصية لتحديدها أو إلغاء التحديد</p>
+                <p id="instructionText">✨ اضغط يساراً لتحديد | اضغط يميناً للتفاصيل</p>
             </div>
         </div>
     </div>
@@ -50,56 +65,56 @@
     <script>
         // متغيرات اللعبة
         const characters = [
-            { name: 'Yuji Itadori', image: 'images/1.jfif' },
-            { name: 'Megumi Fushiguro', image: 'images/2.jfif' },
-            { name: 'Nobara Kugisaki', image: 'images/3.jfif' },
-            { name: 'Satoru Gojo', image: 'images/4.jfif' },
-            { name: 'Ryomen Sukuna', image: 'images/5.jfif' },
-            { name: 'Kento Nanami', image: 'images/6.jfif' },
-            { name: 'Maki Zenin', image: 'images/7.jfif' },
-            { name: 'Toge Inumaki', image: 'images/8.jfif' },
-            { name: 'Panda', image: 'images/9.jfif' },
-            { name: 'Yuta Okkotsu', image: 'images/10.jfif' },
-            { name: 'Suguru Geto', image: 'images/11.jfif' },
-            { name: 'Mahito', image: 'images/12.jfif' },
-            { name: 'Jogo', image: 'images/13.jfif' },
-            { name: 'Hanami', image: 'images/14.jfif' },
-            { name: 'Dagon', image: 'images/15.jfif' },
-            { name: 'Aoi Todo', image: 'images/16.jfif' },
-            { name: 'Mai Zenin', image: 'images/17.jfif' },
-            { name: 'Kasumi Miwa', image: 'images/18.jfif' },
-            { name: 'Kokichi Muta', image: 'images/19.jfif' },
-            { name: 'Noritoshi Kamo', image: 'images/20.jfif' },
-            { name: 'Momo Nishimiya', image: 'images/21.jfif' },
-            { name: 'Shoko Ieiri', image: 'images/22.jfif' },
-            { name: 'Kiyotaka Ijichi', image: 'images/23.jfif' },
-            { name: 'Yoshinobu Gakuganji', image: 'images/24.jfif' },
-            { name: 'Mei Mei', image: 'images/25.jfif' },
-            { name: 'Ui Ui', image: 'images/26.jfif' },
-            { name: 'Choso', image: 'images/27.jfif' },
-            { name: 'Eso', image: 'images/28.jfif' },
-            { name: 'Kechizu', image: 'images/29.jfif' },
-            { name: 'Toji Fushiguro', image: 'images/30.jfif' },
-            { name: 'Naobito Zenin', image: 'images/31.jfif' },
-            { name: 'Naoya Zenin', image: 'images/32.jfif' },
-            { name: 'Yuki Tsukumo', image: 'images/33.jfif' },
-            { name: 'Tengen', image: 'images/34.jfif' },
-            { name: 'Masamichi Yaga', image: 'images/35.jfif' },
-            { name: 'Arata Nitta', image: 'images/36.jfif' },
-            { name: 'Junpei Yoshino', image: 'images/37.jfif' },
-            { name: 'Kenjaku', image: 'images/38.jfif' },
-            { name: 'Uraume', image: 'images/39.jfif' },
-            { name: 'Haruta Shigemo', image: 'images/40.jfif' },
-            { name: 'Juzo Kumiya', image: 'images/41.jfif' },
-            { name: 'Jiro Awasaka', image: 'images/42.jfif' },
-            { name: 'Ogami', image: 'images/43.jfif' },
-            { name: 'Rika Orimoto', image: 'images/44.jfif' },
-            { name: 'Hiromi Higuruma', image: 'images/45.jfif' },
-            { name: 'Hajime Kashimo', image: 'images/46.jfif' },
-            { name: 'Ryu Ishigori', image: 'images/47.jfif' },
-            { name: 'Takako Uro', image: 'images/48.jfif' },
-            { name: 'Fumihiko Takaba', image: 'images/49.jfif' },
-            { name: 'Tsumiki Fushiguro', image: 'images/50.jfif' }
+            { name: 'Yuji Itadori', image: 'images/1.jfif', details: 'وعاء سوكونا ويمتلك قوة جسدية هائلة. / Sukuna\'s vessel with immense physical strength.' },
+            { name: 'Megumi Fushiguro', image: 'images/2.jfif', details: 'يستخدم تقنية "عشرة ظلال" لاستدعاء الشيكيجامي. / Uses the "Ten Shadows Technique" to summon Shikigami.' },
+            { name: 'Nobara Kugisaki', image: 'images/3.jfif', details: 'ساحرة تستخدم المطرقة والمسامير وتقنية الدمية. / A sorcerer who uses a hammer, nails, and the Straw Doll Technique.' },
+            { name: 'Satoru Gojo', image: 'images/4.jfif', details: 'الأقوى، يمتلك عيون الستة وتقنية اللانهاية. / The strongest, possessing the Six Eyes and Limitless technique.' },
+            { name: 'Ryomen Sukuna', image: 'images/5.jfif', details: 'ملك اللعنات الأسطوري والأكثر رعباً. / The legendary and most fearsome King of Curses.' },
+            { name: 'Kento Nanami', image: 'images/6.jfif', details: 'ساحر من الدرجة الأولى يعتمد على تقنية النسبة 7:3. / A Grade 1 sorcerer using the 7:3 Ratio Technique.' },
+            { name: 'Maki Zenin', image: 'images/7.jfif', details: 'خبيرة أسلحة لا تملك طاقة ملعونة لكنها وحش جسدي. / A weapon expert with no cursed energy but superhuman physical prowess.' },
+            { name: 'Toge Inumaki', image: 'images/8.jfif', details: 'يستخدم الكلام الملعون لإجبار الآخرين على تنفيذ أوامره. / Uses Cursed Speech to force others to obey his commands.' },
+            { name: 'Panda', image: 'images/9.jfif', details: 'جثة ملعونة متحولة تمتلك ثلاث شخصيات (نوى). / An abrupt mutated Cursed Corpse with three personalities (cores).' },
+            { name: 'Yuta Okkotsu', image: 'images/10.jfif', details: 'ساحر درجة خاصة يمتلك طاقة هائلة وتحميه "ريكا". / A Special Grade sorcerer with massive energy, protected by "Rika".' },
+            { name: 'Suguru Geto', image: 'images/11.jfif', details: 'مستخدم تلاعب باللعنات وخصم غوجو السابق. / A Cursed Spirit Manipulation user and Gojo\'s former rival.' },
+            { name: 'Mahito', image: 'images/12.jfif', details: 'لعنة ولدت من كراهية البشر، يغير شكل الأرواح. / A curse born from human hatred; he reshapes souls.' },
+            { name: 'Jogo', image: 'images/13.jfif', details: 'لعنة بركانية قوية تسعى لاستبدال البشر باللعنات. / A powerful volcano-based curse seeking to replace humans.' },
+            { name: 'Hanami', image: 'images/14.jfif', details: 'لعنة تمثل الغابة وتستخدم النباتات في قتالها. / A curse representing the forest, using plants in battle.' },
+            { name: 'Dagon', image: 'images/15.jfif', details: 'لعنة بدأت كرحم ملعون مائي ثم تطورت لكيان قوي. / A curse that started as a water-based womb then evolved.' },
+            { name: 'Aoi Todo', image: 'images/16.jfif', details: 'ساحر قوي من مدرسة كيوتو يستخدم تقنية "بوغي ووغي". / A strong Kyoto student who uses the "Boogie Woogie" technique.' },
+            { name: 'Mai Zenin', image: 'images/17.jfif', details: 'أخت ماكي وتستخدم المسدسات لتعزيز طاقتها الملعونة. / Maki\'s sister who uses firearms to channel her cursed energy.' },
+            { name: 'Kasumi Miwa', image: 'images/18.jfif', details: 'تصف نفسها بالساحرة العادية وتستخدم أسلوب "الظل البسيط". / Describes herself as ordinary; uses "Simple Shadow" style.' },
+            { name: 'Kokichi Muta', image: 'images/19.jfif', details: 'يتحكم بآليين عن بعد بسبب "القيد السماوي". / Controls robots remotely due to a "Heavenly Restriction."' },
+            { name: 'Noritoshi Kamo', image: 'images/20.jfif', details: 'يستخدم تقنية التلاعب بالدم الموروثة في عائلة كامو. / Uses the Blood Manipulation technique inherited by the Kamo family.' },
+            { name: 'Momo Nishimiya', image: 'images/21.jfif', details: 'ساحرة تطير على مكنسة وتستخدم الرياح في الهجوم. / A sorcerer who flies on a broom and uses wind attacks.' },
+            { name: 'Shoko Ieiri', image: 'images/22.jfif', details: 'الطبيبة الرئيسية للسحرة بفضل تقنية العلاج المعكوسة. / The main doctor for sorcerers via Reversed Cursed Technique.' },
+            { name: 'Kiyotaka Ijichi', image: 'images/23.jfif', details: 'المسؤول عن الخدمات اللوجستية والحواجز في المدرسة. / In charge of logistics and barriers (veils) at the school.' },
+            { name: 'Yoshinobu Gakuganji', image: 'images/24.jfif', details: 'مدير مدرسة كيوتو ويستخدم الموسيقى كسلاح. / Principal of Kyoto school; uses music as a weapon.' },
+            { name: 'Mei Mei', image: 'images/25.jfif', details: 'ساحرة مستقلة تحب المال وتتحكم في الغربان. / An independent sorcerer who loves money and controls crows.' },
+            { name: 'Ui Ui', image: 'images/26.jfif', details: 'شقيق مي مي المخلص جداً لقدراتها. / Mei Mei\'s younger brother, deeply devoted to her.' },
+            { name: 'Choso', image: 'images/27.jfif', details: 'الأخ الأكبر للأرحام الملعونة ويستخدم تقنية الدم. / The eldest of the Cursed Wombs, using blood techniques.' },
+            { name: 'Eso', image: 'images/28.jfif', details: 'أحد الأرحام الملعونة ويمتلك تقنية الدم السام. / One of the Cursed Wombs with poisonous blood techniques.' },
+            { name: 'Kechizu', image: 'images/29.jfif', details: 'الأخ الأصغر للأرحام الملعونة بمظهر غير بشري. / The youngest Cursed Womb brother with a non-human appearance.' },
+            { name: 'Toji Fushiguro', image: 'images/30.jfif', details: 'قاتل السحرة الذي كاد أن يقتل غوجو. / The Sorcerer Killer who nearly defeated Gojo.' },
+            { name: 'Naobito Zenin', image: 'images/31.jfif', details: 'رئيس عائلة زينين ويمتاز بسرعة فائقة جداً. / Head of the Zenin family, known for incredible speed.' },
+            { name: 'Naoya Zenin', image: 'images/32.jfif', details: 'ساحر مغرور يطمح لرئاسة عائلته ويمتلك سرعة عالية. / An arrogant sorcerer seeking family leadership with high speed.' },
+            { name: 'Yuki Tsukumo', image: 'images/33.jfif', details: 'ساحرة درجة خاصة تهتم بالبحث عن عالم بلا لعنات. / A Special Grade sorcerer researching a world without curses.' },
+            { name: 'Tengen', image: 'images/34.jfif', details: 'كيان خالد يوفر الحماية والحواجز لليابان. / An immortal being providing protection and barriers for Japan.' },
+            { name: 'Masamichi Yaga', image: 'images/35.jfif', details: 'مدير مدرسة طوكيو وصانع الجثث الملعونة. / Principal of Tokyo school and creator of Cursed Corpses.' },
+            { name: 'Arata Nitta', image: 'images/36.jfif', details: 'مستخدم جوجيتسو متخصص في الإسعافات الأولية. / A jujutsu user specialized in medical first aid.' },
+            { name: 'Junpei Yoshino', image: 'images/37.jfif', details: 'ضحية تنمر تورط مع ماهيتو وتعلم فنون اللعنات. / A bullying victim who met Mahito and learned curse arts.' },
+            { name: 'Kenjaku', image: 'images/38.jfif', details: 'عقل مدبر قديم يستولي على أجساد السحرة. / An ancient mastermind who takes over sorcerers\' bodies.' },
+            { name: 'Uraume', image: 'images/39.jfif', details: 'خادم سوكونا المخلص ويمتلك تقنية تجميد الجليد. / Sukuna\'s loyal servant with ice-freezing techniques.' },
+            { name: 'Haruta Shigemo', image: 'images/40.jfif', details: 'جبان يعتمد على "المعجزات" المخزنة للنجاة. / A coward relying on stored "miracles" to survive.' },
+            { name: 'Juzo Kumiya', image: 'images/41.jfif', details: 'صانع أدوات ملعونة يحب صنع أشياء من أجساد البشر. / A cursed tool maker who likes crafting items from humans.' },
+            { name: 'Jiro Awasaka', image: 'images/42.jfif', details: 'مستخدم لعنات عجوز يمتلك تقنية "ال��ضاد". / An old curse user with the "Inverse" technique.' },
+            { name: 'Kinji Hakari', image: 'images/43.jfif', details: 'طالب سنة ثالثة موقوف، يعتمد على الحظ والقمار في قتاله. / A suspended 3rd-year student who relies on luck and gambling.' },
+            { name: 'Rika Orimoto', image: 'images/44.jfif', details: 'الروح الملعونة التي كانت ترافق يوتا وتلقب بالملكة. / The cursed spirit that accompanied Yuta, known as the Queen.' },
+            { name: 'Hiromi Higuruma', image: 'images/45.jfif', details: 'عبقري قانوني يمتلك تقنية المحكمة والمطرقة. / A legal genius with a courtroom and gavel-based technique.' },
+            { name: 'Hajime Kashimo', image: 'images/46.jfif', details: 'مقاتل من الماضي طاقته الملعونة تشبه الكهرباء. / A fighter from the past whose cursed energy acts like electricity.' },
+            { name: 'Ryu Ishigori', image: 'images/47.jfif', details: 'يمتلك أقوى مدفع طاقة ملعونة يخرج من شعره. / Has the highest cursed energy output, fired from his hair.' },
+            { name: 'Takako Uro', image: 'images/48.jfif', details: 'قائدة فرقة اغتيالات سابقة تتحكم في "الفضاء/السماء". / Former assassination captain who controls "sky/space."' },
+            { name: 'Fumihiko Takaba', image: 'images/49.jfif', details: 'يمتلك تقنية تجعل ما يجده مضحكاً حقيقة واقعة. / Has a technique that makes what he finds funny become reality.' },
+            { name: 'Yorozu', image: 'images/50.jfif', details: 'ساحرة من الماضي مهووسة بسوكونا وتستخدم معدنًا سائلًا. / A sorcerer from the past obsessed with Sukuna, using liquid metal.' }
         ];
 
         let selectedPlayer1 = new Set();
@@ -107,6 +122,27 @@
         let currentGameCode = null;
         let currentRole = null;
         let syncInterval = null;
+
+        // فتح Modal للتفاصيل
+        function openModal(character) {
+            document.getElementById('modalImage').src = character.image;
+            document.getElementById('modalName').textContent = character.name;
+            document.getElementById('modalDetails').textContent = character.details;
+            document.getElementById('detailsModal').style.display = 'block';
+        }
+
+        // إغلاق Modal
+        function closeModal() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
+        // إغلاق Modal عند الضغط خارجه
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailsModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
 
         // تحميل البيانات عند فتح الصفحة
         function loadGameData() {
@@ -119,12 +155,10 @@
                 return;
             }
 
-            // عرض معلومات اللاعب
             const roleText = currentRole === 1 ? 'أنت اللاعب الأول 👤' : 'أنت اللاعب الثاني 👥';
             document.getElementById('currentRole').textContent = roleText;
             document.getElementById('gameCodeDisplay').textContent = `كود الغرفة: ${currentGameCode}`;
 
-            // إذا كان اللاعب الثاني، انتظر اللاعب الأول
             if (currentRole === 2) {
                 document.getElementById('instructionText').textContent = '⏳ في انتظار اللاعب الأول...';
             }
@@ -138,7 +172,6 @@
             const room = rooms[currentGameCode];
             
             if (room) {
-                // تحديث الاختيارات للعرض فقط (بدون تعديل الاختيارات الشخصية)
                 if (room.player1 && room.player1.selected && currentRole === 2) {
                     selectedPlayer1 = new Set(room.player1.selected);
                     updateDisplay();
@@ -204,6 +237,7 @@
                     <div class="character-name">${char.name}</div>
                 `;
 
+                // الضغط الأيسر للتحديد
                 div.onclick = () => {
                     if (currentRole === 1) {
                         if (selectedPlayer1.has(index)) {
@@ -221,6 +255,12 @@
                         saveSelections();
                     }
                     updateDisplay();
+                };
+
+                // الضغط الأيمن للتفاصيل
+                div.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    openModal(char);
                 };
 
                 grid.appendChild(div);
@@ -242,7 +282,6 @@
                 }
             });
 
-            // عرض اختيارات اللاعب الأول فقط (لا يرى المتلقي)
             const player1Display = document.getElementById('player1Display');
             player1Display.innerHTML = '';
             if (currentRole === 1) {
@@ -258,7 +297,6 @@
                 });
             }
 
-            // عرض اختيارات اللاعب الثاني فقط (لا يرى المتلقي)
             const player2Display = document.getElementById('player2Display');
             player2Display.innerHTML = '';
             if (currentRole === 2) {
